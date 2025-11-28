@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check-in, GO! - Perfil de Viagem</title>
+    <style>
+        /* CSS para deixar bonito e responsivo (funciona no celular) */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        
+        /* Cabeçalho com Logo (Texto) */
+        .header { text-align: center; margin-bottom: 30px; }
+        .logo-text { color: #008000; font-size: 28px; font-weight: 900; letter-spacing: -1px; margin: 0; }
+        .subtitle { color: #666; font-size: 16px; margin-top: 5px; }
+
+        /* Estilo das Seções */
+        .section-title { background-color: #e8f5e9; padding: 12px; border-left: 5px solid #008000; margin-top: 35px; margin-bottom: 20px; font-weight: bold; color: #2e7d32; border-radius: 4px; }
+        
+        /* Inputs e Labels */
+        label { display: block; margin-bottom: 8px; font-weight: 600; margin-top: 15px; color: #444; }
+        input[type="text"], input[type="email"], input[type="date"], select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 16px; transition: border 0.3s; }
+        input:focus, textarea:focus { border-color: #008000; outline: none; }
+        
+        /* Grupos de Checkbox e Radio */
+        .options-group { background: #fafafa; padding: 15px; border-radius: 8px; border: 1px solid #eee; display: grid; grid-gap: 10px; }
+        .option-item { display: flex; align-items: center; cursor: pointer; }
+        .option-item input { margin-right: 12px; width: 18px; height: 18px; accent-color: #008000; cursor: pointer; }
+        .option-item label { margin: 0; font-weight: normal; font-size: 15px; cursor: pointer; }
+
+        /* Box de Avisos */
+        .disclaimer-box { background-color: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 6px; color: #856404; font-size: 14px; margin-top: 25px; line-height: 1.5; }
+        .disclaimer-box strong { display: block; margin-bottom: 5px; }
+
+        /* Botão */
+        button { width: 100%; padding: 18px; background-color: #008000; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        button:hover { background-color: #006400; transform: translateY(-2px); }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
