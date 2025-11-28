@@ -6,6 +6,7 @@ interface TravelerFormProps {
 
 const TravelerForm: React.FC<TravelerFormProps> = ({ onBack }) => {
   const [submitted, setSubmitted] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState('Consultoria Inicial');
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,7 +35,7 @@ const TravelerForm: React.FC<TravelerFormProps> = ({ onBack }) => {
       flexibilidade_datas: formData.get('flexibilidade_datas'),
       meios_transporte_busca: formData.getAll('meios_transporte_busca'),
       // Section 5 (New)
-      plano_assessoria: formData.get('plano_assessoria'),
+      plano_assessoria: selectedPlan,
       // Section 6
       pagamento: formData.getAll('pagamento'),
       plataforma: formData.getAll('plataforma'),
@@ -186,38 +187,45 @@ const TravelerForm: React.FC<TravelerFormProps> = ({ onBack }) => {
 
         <div className="section-title">5. Nossos Planos de Assessoria</div>
         <p style={{textAlign: 'center', color: '#333', fontSize: '1.1em'}}>Para celebrar nosso lançamento, estamos com valores especiais!</p>
+        <input type="hidden" name="plano_assessoria" value={selectedPlan} />
         <div className="plans-container">
-            <div className="plan-card">
+            <div 
+              className={`plan-card ${selectedPlan === 'Consultoria Inicial' ? 'selected' : ''}`}
+              onClick={() => setSelectedPlan('Consultoria Inicial')}
+            >
                 <h3 className="plan-title">Consultoria Inicial</h3>
                 <p className="plan-price">R$ 100</p>
-                <p className="plan-description">Ideal para quem não sabe por onde começar. Batemos um papo para desenhar o rascunho da sua viagem. <strong>Valor 100% abatido</strong> se fechar uma assessoria completa!</p>
+                <p className="plan-description"><strong>Sua Viagem Começa Aqui.</strong> Perdido com tantas opções? Vamos conversar! Eu te ajudo a transformar suas ideias em um plano de viagem concreto. E o melhor: este valor vira <strong>crédito</strong> para sua assessoria completa!</p>
             </div>
-            <div className="plan-card">
+            <div 
+              className={`plan-card ${selectedPlan === 'Assessoria Essencial' ? 'selected' : ''}`}
+              onClick={() => setSelectedPlan('Assessoria Essencial')}
+            >
                 <h3 className="plan-title">Assessoria Essencial</h3>
                 <p className="plan-price">R$ 150 <span className="original-price">R$ 200</span></p>
-                <p className="plan-description">Busca e monitoramento de <strong>passagens OU hospedagens</strong>, com assessoria completa via WhatsApp, plataforma online individual e suporte até o embarque.</p>
+                <p className="plan-description"><strong>O Essencial, Sem Estresse.</strong> Deixe a parte chata comigo! Eu caço as melhores tarifas de <strong>passagens aéreas OU hotéis</strong>. Você recebe atualizações diárias e tem meu suporte total via WhatsApp até a hora de embarcar. Sua única preocupação? Fazer as malas.</p>
             </div>
-            <div className="plan-card">
+            <div 
+              className={`plan-card ${selectedPlan === 'Assessoria Completa' ? 'selected' : ''}`}
+              onClick={() => setSelectedPlan('Assessoria Completa')}
+            >
                 <h3 className="plan-title">Assessoria Completa</h3>
                 <p className="plan-price">R$ 200 <span className="original-price">R$ 250</span></p>
-                <p className="plan-description">Tudo do plano Essencial, incluindo a busca e monitoramento de <strong>passagens E hospedagens</strong>, encontrando as melhores combinações ou pacotes.</p>
+                <p className="plan-description"><strong>A Viagem Completa, do Seu Jeito.</strong> A combinação perfeita! Encontro as melhores <strong>passagens E hotéis</strong> que se encaixam no seu sonho (e no seu bolso), garantindo o melhor custo-benefício. Ideal para quem quer tudo resolvido, sem abrir mão da personalização.</p>
             </div>
-            <div className="plan-card">
+            <div 
+              className={`plan-card ${selectedPlan === 'Assessoria Premium + Roteiro' ? 'selected' : ''}`}
+              onClick={() => setSelectedPlan('Assessoria Premium + Roteiro')}
+            >
                 <h3 className="plan-title">Assessoria Premium + Roteiro</h3>
                 <p className="plan-price">R$ 250 <span className="original-price">R$ 300</span></p>
-                <p className="plan-description">O pacote definitivo! Inclui tudo da Assessoria Completa mais a <strong>criação de um roteiro diário personalizado</strong> e otimizado para sua viagem.</p>
+                <p className="plan-description"><strong>A Experiência Definitiva.</strong> Viva o destino, não o planejamento. Além de cuidar das passagens e estadias, eu desenho um <strong>roteiro diário 100% personalizado</strong> para você. Onde comer, o que visitar, como se locomover... Sua viagem dos sonhos, desenhada à mão.</p>
             </div>
         </div>
 
-        <fieldset className="options-group" style={{border: 'none', padding: 0, marginTop: '20px'}}>
-          <legend>Qual plano de assessoria você tem interesse?</legend>
-          <div className="options-group">
-            <div className="option-item"><input type="radio" id="plano1" name="plano_assessoria" value="Ainda não sei / Quero a Consultoria Inicial" defaultChecked /><label htmlFor="plano1">Ainda não sei / Quero a Consultoria Inicial (R$ 100)</label></div>
-            <div className="option-item"><input type="radio" id="plano2" name="plano_assessoria" value="Assessoria Essencial (R$ 150)" /><label htmlFor="plano2">Assessoria Essencial (R$ 150)</label></div>
-            <div className="option-item"><input type="radio" id="plano3" name="plano_assessoria" value="Assessoria Completa (R$ 200)" /><label htmlFor="plano3">Assessoria Completa (R$ 200)</label></div>
-            <div className="option-item"><input type="radio" id="plano4" name="plano_assessoria" value="Assessoria Premium + Roteiro (R$ 250)" /><label htmlFor="plano4">Assessoria Premium + Roteiro (R$ 250)</label></div>
-          </div>
-        </fieldset>
+        <p style={{textAlign: 'center', fontSize: '0.9em', color: '#666', marginTop: '15px'}}>
+          Fique tranquilo! A cobrança da assessoria só é realizada após nosso contato e sua aprovação final.
+        </p>
 
         <div className="disclaimer-box" style={{backgroundColor: '#e9f7ff', borderColor: '#bde0fe', color: '#00568c'}}>
             <strong>Meu Papel Como Seu Agente de Viagens</strong>

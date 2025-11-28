@@ -45,16 +45,22 @@
         }
         .plan-card {
             background-color: #f9f9f9;
-            border: 1px solid #eee;
+            border: 2px solid #eee;
             border-top: 4px solid #008000;
             border-radius: 8px;
             padding: 20px;
             text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            cursor: pointer;
         }
         .plan-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .plan-card.selected {
+            border-color: #008000;
+            box-shadow: 0 8px 25px rgba(0, 128, 0, 0.15);
+            transform: translateY(-5px);
         }
         .plan-title {
             font-size: 1.3em;
@@ -79,7 +85,7 @@
             font-size: 0.95em;
             color: #666;
             line-height: 1.5;
-            min-height: 140px; /* Alinha a altura dos cards */
+            min-height: 150px; /* Alinha a altura dos cards */
         }
     </style>
   <script type="importmap">
