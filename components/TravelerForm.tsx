@@ -11,49 +11,17 @@ const TravelerForm: React.FC<TravelerFormProps> = ({ onBack }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    
     const clientName = formData.get('nome_cliente') as string;
     
-    const submissionData = {
-      // Section 1
-      nome_cliente: clientName,
-      contato: formData.get('contato'),
-      destino: formData.get('destino'),
-      quem_vai: formData.get('quem_vai'),
-      data_ida: formData.get('data_ida'),
-      data_volta: formData.get('data_volta'),
-      // Section 2
-      aeroporto_saida: formData.get('aeroporto_saida'),
-      bagagem: formData.get('bagagem'),
-      cia_aerea: formData.get('cia_aerea'),
-      preferencia_voo: formData.get('preferencia_voo'),
-      // Section 3
-      transporte_destino: formData.getAll('transporte_destino'),
-      // Section 4 (New)
-      tipo_servico: formData.get('tipo_servico'),
-      experiencia_viagem: formData.get('experiencia_viagem'),
-      flexibilidade_datas: formData.get('flexibilidade_datas'),
-      meios_transporte_busca: formData.getAll('meios_transporte_busca'),
-      // Section 5 (New)
-      plano_assessoria: selectedPlan,
-      // Section 6
-      pagamento: formData.getAll('pagamento'),
-      plataforma: formData.getAll('plataforma'),
-      ciente_regras: formData.get('ciente_regras'),
-      // Section 7
-      obs: formData.get('obs'),
-    };
-
-    // Save to localStorage
     const existingSubmissions = JSON.parse(localStorage.getItem('travelerSubmissions') || '[]');
     const newSubmission = {
       id: new Date().toISOString(),
-      data: submissionData
+      data: Object.fromEntries(formData.entries())
     };
-    existingSubmissions.unshift(newSubmission); // Add new submissions to the top
+    newSubmission.data.plano_assessoria = selectedPlan;
+    existingSubmissions.unshift(newSubmission);
     localStorage.setItem('travelerSubmissions', JSON.stringify(existingSubmissions));
 
-    // Trigger WhatsApp notification
     const message = encodeURIComponent(`${clientName || 'Um novo cliente'} acabou de preencher o formulário.`);
     const whatsappUrl = `https://wa.me/5521994527694?text=${message}`;
     window.open(whatsappUrl, '_blank');
@@ -63,216 +31,126 @@ const TravelerForm: React.FC<TravelerFormProps> = ({ onBack }) => {
 
   if (submitted) {
     return (
-        <div className="container" style={{ textAlign: 'center' }}>
-            <div className="header">
-                <h1 className="logo-text">Obrigado! ✅</h1>
-                <p className="subtitle">Seu perfil foi enviado com sucesso. Em breve entraremos em contato!</p>
+        <div className="success-container">
+            <div className="logo logo-gradient" style={{ marginBottom: '10px' }}>
+                Check-in, GO! <span className="logo-emoji">✈️</span>
             </div>
-            <button onClick={onBack} type="button">Voltar ao Início</button>
+            <p>Agradecemos o envio! Comece sua anamnese de Viagens Personalizada, Online e Presencial.</p>
+            <div className="success-flow">
+              <div className="flow-icon">🌎</div>
+              <div className="flow-arrow"></div>
+              <div className="flow-icon">💸</div>
+              <div className="flow-arrow"></div>
+              <div className="flow-icon">✅</div>
+            </div>
+            <button onClick={onBack} type="button" className="btn-secondary">
+              PLANEJAR OUTRA VIAGEM
+            </button>
         </div>
     );
   }
 
   return (
-    <div className="container">
-      <button onClick={onBack} type="button" style={{ backgroundColor: '#6c757d', marginBottom: '20px', width: 'auto', padding: '10px 20px' }}>
-          &larr; Voltar
-      </button>
-      <div className="header">
-        <h1 className="logo-text">Check-in, GO! ✈️</h1>
-        <p className="subtitle">Anamnese de Perfil para Montagem de Roteiro</p>
+    <div className="form-layout-container">
+      <div className="form-main">
+         <div className="form-header">
+            <div className="logo logo-gradient">
+              Check-in, GO! <span className="logo-emoji">✈️</span>
+            </div>
+         </div>
+         <form onSubmit={handleSubmit} id="traveler-form">
+            <input type="hidden" name="plano_assessoria" value={selectedPlan} />
+
+            <div className="form-section-header"><span>🧳</span>A Viagem</div>
+            <label htmlFor="destino">Viagem</label>
+            <input type="text" id="destino" name="destino" placeholder="Destino" required />
+
+            <div className="form-section-header"><span>✈️</span>Voos e Bagagem</div>
+             <label htmlFor="aeroporto_saida">Voo</label>
+            <input type="text" id="aeroporto_saida" name="aeroporto_saida" placeholder="Aeroporto de saída" />
+
+            <div className="form-section-header"><span>🚌</span>Transporte no Destino</div>
+            <label htmlFor="transporte_destino">Transporte</label>
+            <input type="text" id="transporte_destino" name="transporte_destino" placeholder="Tipo de transporte" />
+
+
+            <div className="form-section-header"><span>👤</span>Sobre Você e a Viagem</div>
+            <div className="form-grid">
+              <div>
+                <label htmlFor="nome_cliente">Nome</label>
+                <input type="text" id="nome_cliente" name="nome_cliente" placeholder="Nome" required />
+              </div>
+              <div>
+                <label htmlFor="sobrenome_cliente">Sobrenome</label>
+                <input type="text" id="sobrenome_cliente" name="sobrenome_cliente" placeholder="Sobrenome" required />
+              </div>
+              <div>
+                <label htmlFor="contato">Email</label>
+                <input type="email" id="contato" name="contato" placeholder="Email" required />
+              </div>
+               <div>
+                <label htmlFor="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="Senha" required />
+              </div>
+            </div>
+            
+            <button type="submit" className="btn-primary" style={{marginTop: '40px'}}>QUERO PLANEJAR MINHA VIAGEM!</button>
+          </form>
       </div>
-      <form onSubmit={handleSubmit}>
-        <div className="section-title">1. A Viagem</div>
 
-        <label htmlFor="nome_cliente">Nome do Cliente:</label>
-        <input type="text" id="nome_cliente" name="nome_cliente" required />
-
-        <label htmlFor="contato">Email ou WhatsApp:</label>
-        <input type="text" id="contato" name="contato" required />
-
-        <label htmlFor="destino">Destino:</label>
-        <input type="text" id="destino" name="destino" placeholder="Ex: Beto Carrero, SC" required />
-
-        <label htmlFor="quem_vai">Quem vai viajar? (Ex: 1 adulto, 2 crianças de 8 e 10 anos)</label>
-        <input type="text" id="quem_vai" name="quem_vai" required />
-
-        <label>Datas (Ida e Volta):</label>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <input type="date" name="data_ida" required aria-label="Data de Ida" />
-          <input type="date" name="data_volta" required aria-label="Data de Volta" />
-        </div>
-
-        <div className="section-title">2. Voos e Bagagem</div>
-
-        <label htmlFor="aeroporto_saida">Aeroporto de Preferência (Saída):</label>
-        <input type="text" id="aeroporto_saida" name="aeroporto_saida" placeholder="Ex: Galeão ou Santos Dumont" />
-
-        <fieldset className="options-group" style={{border: 'none', padding: 0}}>
-          <legend>Bagagem:</legend>
-          <div className="options-group">
-            <div className="option-item">
-              <input type="radio" id="bag1" name="bagagem" value="Mão (10kg) + Mochila" defaultChecked />
-              <label htmlFor="bag1">Mala de Mão (10kg) + Mochila (Gratuito)</label>
+      <div className="form-sidebar">
+          <div className="sidebar-header">
+            <div className="logo logo-light" style={{ fontSize: '1.8rem' }}>
+              Check-in, GO! <span className="logo-emoji">✈️</span>
             </div>
-            <div className="option-item">
-              <input type="radio" id="bag2" name="bagagem" value="Despachada (23kg)" />
-              <label htmlFor="bag2">Preciso despachar mala (23kg) - Custo extra</label>
-            </div>
+            <p>Por que você vai se apaixonar.</p>
           </div>
-        </fieldset>
-
-        <fieldset className="options-group" style={{border: 'none', padding: 0}}>
-          <legend>Cia Aérea Preferida:</legend>
-          <div className="options-group">
-            <div className="option-item">
-              <input type="radio" id="cia1" name="cia_aerea" value="Indiferente (menor preço)" defaultChecked />
-              <label htmlFor="cia1">Indiferente (Foco no menor preço)</label>
-            </div>
-            <div className="option-item"><input type="radio" id="cia2" name="cia_aerea" value="Azul" /><label htmlFor="cia2">Azul</label></div>
-            <div className="option-item"><input type="radio" id="cia3" name="cia_aerea" value="Gol" /><label htmlFor="cia3">Gol</label></div>
-            <div className="option-item"><input type="radio" id="cia4" name="cia_aerea" value="Latam" /><label htmlFor="cia4">Latam</label></div>
+          <div className="pricing-cards-container">
+              <div 
+                className={`pricing-card-sidebar ${selectedPlan === 'Consultoria Inicial' ? 'selected' : ''}`}
+                onClick={() => setSelectedPlan('Consultoria Inicial')}
+              >
+                  <div className="pricing-card-sidebar-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1534351590666-13e3e96b5017?q=80&w=1770&auto=format&fit=crop')"}}></div>
+                  <div className="pricing-card-sidebar-content">
+                      <h3>Consultoria Inicial</h3>
+                      <p>Assessoria de Viagens e turismo.</p>
+                      <div className="pricing-card-sidebar-price">
+                        R$ 99 <del>R$ 150</del>
+                      </div>
+                  </div>
+              </div>
+              <div 
+                className={`pricing-card-sidebar ${selectedPlan === 'Assessoria Essencial' ? 'selected' : ''}`}
+                onClick={() => setSelectedPlan('Assessoria Essencial')}
+              >
+                  <div className="pricing-card-sidebar-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1770&auto=format&fit=crop')"}}></div>
+                   <div className="pricing-card-sidebar-content">
+                      <h3>Assessoria Essencial</h3>
+                      <p>Assessoria de Viagens e turismo.</p>
+                      <div className="pricing-card-sidebar-price">
+                        R$ 99 <del>R$ 199</del>
+                      </div>
+                  </div>
+              </div>
+               <div 
+                className={`pricing-card-sidebar ${selectedPlan === 'Assessoria Completa' ? 'selected' : ''}`}
+                onClick={() => setSelectedPlan('Assessoria Completa')}
+              >
+                  <div className="pricing-card-sidebar-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1542314831-068cd1dbb563?q=80&w=1770&auto=format&fit=crop')"}}></div>
+                   <div className="pricing-card-sidebar-content">
+                      <h3>Assessoria Completa</h3>
+                      <p>Assessoria de Viagens e turismo.</p>
+                      <div className="pricing-card-sidebar-price">
+                        R$ 149 <del>R$ 250</del>
+                      </div>
+                  </div>
+              </div>
           </div>
-        </fieldset>
-
-        <fieldset className="options-group" style={{border: 'none', padding: 0}}>
-            <legend>Sobre os voos, você prefere:</legend>
-            <div className="options-group">
-                <div className="option-item"><input type="radio" id="voo1" name="preferencia_voo" value="Voos diretos" defaultChecked /><label htmlFor="voo1">Voos diretos, mesmo que mais caros</label></div>
-                <div className="option-item"><input type="radio" id="voo2" name="preferencia_voo" value="Voos com escalas para economizar" /><label htmlFor="voo2">Voos com escalas/conexões para economizar</label></div>
-                <div className="option-item"><input type="radio" id="voo3" name="preferencia_voo" value="Interesse em Stopover" /><label htmlFor="voo3">Tenho interesse em Stopover (ficar dias na cidade da conexão)</label></div>
-            </div>
-        </fieldset>
-        
-        <div className="section-title">3. Transporte no Destino</div>
-        <fieldset className="options-group" style={{border: 'none', padding: 0}}>
-          <legend>Como pretende se locomover lá?</legend>
-          <div className="options-group">
-            <div className="option-item"><input type="checkbox" id="trans1" name="transporte_destino" value="Aluguel de carro" /><label htmlFor="trans1">Vou alugar carro (Dirijo lá)</label></div>
-            <div className="option-item"><input type="checkbox" id="trans2" name="transporte_destino" value="Uber/App" /><label htmlFor="trans2">Uber / 99 / Táxi</label></div>
-            <div className="option-item"><input type="checkbox" id="trans3" name="transporte_destino" value="Transfer" /><label htmlFor="trans3">Serviço de Transfer / Van</label></div>
-            <div className="option-item"><input type="checkbox" id="trans4" name="transporte_destino" value="Transporte Público" /><label htmlFor="trans4">Transporte Público</label></div>
+          <div className="sidebar-note">
+            Descubra qual o serviço se encaixa melhor na sua viagem!
           </div>
-        </fieldset>
-
-        <div className="section-title">4. Sobre Você e a Viagem</div>
-
-        <fieldset className="options-group" style={{border: 'none', padding: 0}}>
-            <legend>Qual seu nível de experiência com viagens?</legend>
-            <div className="options-group">
-                <div className="option-item"><input type="radio" id="exp1" name="experiencia_viagem" value="Iniciante" defaultChecked /><label htmlFor="exp1">Iniciante (Nunca viajei ou viajei pouco)</label></div>
-                <div className="option-item"><input type="radio" id="exp2" name="experiencia_viagem" value="Intermediário" /><label htmlFor="exp2">Intermediário (Já fiz algumas viagens por conta própria)</label></div>
-                <div className="option-item"><input type="radio" id="exp3" name="experiencia_viagem" value="Experiente" /><label htmlFor="exp3">Experiente (Viajo com frequência e organizo tudo)</label></div>
-            </div>
-        </fieldset>
-
-        <fieldset className="options-group" style={{border: 'none', padding: 0}}>
-            <legend>Você tem flexibilidade nas datas? <span style={{fontWeight: 'normal', color: '#008000'}}>(Isso pode reduzir os custos em até 30%!)</span></legend>
-            <div className="options-group">
-                <div className="option-item"><input type="radio" id="flex1" name="flexibilidade_datas" value="Total" defaultChecked /><label htmlFor="flex1">Sim, tenho total flexibilidade</label></div>
-                <div className="option-item"><input type="radio" id="flex2" name="flexibilidade_datas" value="Parcial" /><label htmlFor="flex2">Tenho alguma flexibilidade (dias antes/depois)</label></div>
-                <div className="option-item"><input type="radio" id="flex3" name="flexibilidade_datas" value="Nenhuma" /><label htmlFor="flex3">Não, as datas são fixas</label></div>
-            </div>
-        </fieldset>
-
-        <fieldset className="options-group" style={{border: 'none', padding: 0}}>
-            <legend>Prefere que a busca de passagens inclua:</legend>
-            <div className="options-group">
-                <div className="option-item"><input type="checkbox" id="busca1" name="meios_transporte_busca" value="Avião" /><label htmlFor="busca1">Apenas Avião</label></div>
-                <div className="option-item"><input type="checkbox" id="busca2" name="meios_transporte_busca" value="Ônibus" /><label htmlFor="busca2">Apenas Ônibus</label></div>
-                <div className="option-item"><input type="checkbox" id="busca3" name="meios_transporte_busca" value="Avião + Ônibus" /><label htmlFor="busca3">Conciliar Avião + Ônibus</label></div>
-                <div className="option-item"><input type="checkbox" id="busca4" name="meios_transporte_busca" value="Trem" /><label htmlFor="busca4">Trem (para destinos como a Europa)</label></div>
-            </div>
-        </fieldset>
-
-        <div className="section-title">5. Nossos Planos de Assessoria</div>
-        <p style={{textAlign: 'center', color: '#333', fontSize: '1.1em'}}>Para celebrar nosso lançamento, estamos com valores especiais!</p>
-        <input type="hidden" name="plano_assessoria" value={selectedPlan} />
-        <div className="plans-container">
-            <div 
-              className={`plan-card ${selectedPlan === 'Consultoria Inicial' ? 'selected' : ''}`}
-              onClick={() => setSelectedPlan('Consultoria Inicial')}
-            >
-                <h3 className="plan-title">Consultoria Inicial</h3>
-                <p className="plan-price">R$ 100</p>
-                <p className="plan-description"><strong>Sua Viagem Começa Aqui.</strong> Perdido com tantas opções? Vamos conversar! Eu te ajudo a transformar suas ideias em um plano de viagem concreto. E o melhor: este valor vira <strong>crédito</strong> para sua assessoria completa!</p>
-            </div>
-            <div 
-              className={`plan-card ${selectedPlan === 'Assessoria Essencial' ? 'selected' : ''}`}
-              onClick={() => setSelectedPlan('Assessoria Essencial')}
-            >
-                <h3 className="plan-title">Assessoria Essencial</h3>
-                <p className="plan-price">R$ 150 <span className="original-price">R$ 200</span></p>
-                <p className="plan-description"><strong>O Essencial, Sem Estresse.</strong> Deixe a parte chata comigo! Eu caço as melhores tarifas de <strong>passagens aéreas OU hotéis</strong>. Você recebe atualizações diárias e tem meu suporte total via WhatsApp até a hora de embarcar. Sua única preocupação? Fazer as malas.</p>
-            </div>
-            <div 
-              className={`plan-card ${selectedPlan === 'Assessoria Completa' ? 'selected' : ''}`}
-              onClick={() => setSelectedPlan('Assessoria Completa')}
-            >
-                <h3 className="plan-title">Assessoria Completa</h3>
-                <p className="plan-price">R$ 200 <span className="original-price">R$ 250</span></p>
-                <p className="plan-description"><strong>A Viagem Completa, do Seu Jeito.</strong> A combinação perfeita! Encontro as melhores <strong>passagens E hotéis</strong> que se encaixam no seu sonho (e no seu bolso), garantindo o melhor custo-benefício. Ideal para quem quer tudo resolvido, sem abrir mão da personalização.</p>
-            </div>
-            <div 
-              className={`plan-card ${selectedPlan === 'Assessoria Premium + Roteiro' ? 'selected' : ''}`}
-              onClick={() => setSelectedPlan('Assessoria Premium + Roteiro')}
-            >
-                <h3 className="plan-title">Assessoria Premium + Roteiro</h3>
-                <p className="plan-price">R$ 250 <span className="original-price">R$ 300</span></p>
-                <p className="plan-description"><strong>A Experiência Definitiva.</strong> Viva o destino, não o planejamento. Além de cuidar das passagens e estadias, eu desenho um <strong>roteiro diário 100% personalizado</strong> para você. Onde comer, o que visitar, como se locomover... Sua viagem dos sonhos, desenhada à mão.</p>
-            </div>
-        </div>
-
-        <p style={{textAlign: 'center', fontSize: '0.9em', color: '#666', marginTop: '15px'}}>
-          Fique tranquilo! A cobrança da assessoria só é realizada após nosso contato e sua aprovação final.
-        </p>
-
-        <div className="disclaimer-box" style={{backgroundColor: '#e9f7ff', borderColor: '#bde0fe', color: '#00568c'}}>
-            <strong>Meu Papel Como Seu Agente de Viagens</strong>
-            <p style={{margin: '10px 0 0'}}>Olá! É importante que você saiba que <strong>não sou uma agência de viagens</strong>, mas sim seu agente de viagens pessoal. Meu trabalho é ser uma ponte: conecto você às melhores e mais diversas opções do mercado, facilitando e intermediando todo o processo de planejamento.</p>
-            <p style={{margin: '10px 0 0'}}>Dou todo o suporte necessário durante o planejamento até o momento do seu embarque. Após o embarque, a responsabilidade pela condução da viagem é sua, mas pode contar comigo para qualquer orientação que precisar!</p>
-        </div>
-
-
-        <div className="section-title">6. Pagamento e Compra</div>
-        <fieldset className="options-group" style={{border: 'none', padding: 0}}>
-          <legend>Formas de pagamento preferidas:</legend>
-          <div className="options-group">
-            <div className="option-item"><input type="checkbox" id="pag1" name="pagamento" value="Cartão de Crédito" /><label htmlFor="pag1">Cartão de Crédito (Parcelado)</label></div>
-            <div className="option-item"><input type="checkbox" id="pag2" name="pagamento" value="PIX" /><label htmlFor="pag2">PIX (Com desconto)</label></div>
-            <div className="option-item"><input type="checkbox" id="pag3" name="pagamento" value="Boleto Parcelado" /><label htmlFor="pag3">Boleto Parcelado / KOIN</label></div>
-          </div>
-        </fieldset>
-
-        <fieldset className="options-group" style={{border: 'none', padding: 0}}>
-          <legend>Plataformas de compra:</legend>
-          <div className="options-group">
-            <div className="option-item"><input type="checkbox" id="plat1" name="plataforma" value="A mais barata" defaultChecked /><label htmlFor="plat1">A mais barata (Google Voos/Skyscanner)</label></div>
-            <div className="option-item"><input type="checkbox" id="plat2" name="plataforma" value="Viajanet / Decolar" /><label htmlFor="plat2">Viajanet / Decolar</label></div>
-            <div className="option-item"><input type="checkbox" id="plat3" name="plataforma" value="Hoteis.com" /><label htmlFor="plat3">Hoteis.com</label></div>
-            <div className="option-item"><input type="checkbox" id="plat4" name="plataforma" value="Milhas" /><label htmlFor="plat4">Usar minhas milhas</label></div>
-          </div>
-        </fieldset>
-
-        <div className="disclaimer-box" style={{ backgroundColor: '#fff3cd', border: '1px solid #ffeeba', color: '#856404'}}>
-          <strong>⚠️ Atenção aos Pagamentos:</strong>
-          <ul>
-            <li>Taxas de embarque no cartão costumam vir na 1ª parcela.</li>
-            <li>Alguns voos internacionais ou promoções "relâmpago" podem não aceitar parcelamento.</li>
-          </ul>
-        </div>
-        <div className="options-group" style={{ marginTop: '15px', border: 'none', background: 'none', padding: 0 }}>
-          <div className="option-item">
-            <input type="checkbox" id="ciente_regras" name="ciente_regras" value="true" required />
-            <label htmlFor="ciente_regras">Estou ciente sobre as regras de parcelamento.</label>
-          </div>
-        </div>
-
-        <div className="section-title">7. Toques Finais</div>
-        <label htmlFor="obs">Observações Extras:</label>
-        <textarea id="obs" name="obs" rows={4} placeholder="Ex: Horários preferidos, restrições, se viaja com pet, etc."></textarea>
-        <button type="submit">ENVIAR PERFIL 🚀</button>
-      </form>
+          <button type="submit" form="traveler-form" className="btn-secondary" style={{marginTop: '20px'}}>QUERO PLANEJAR MINHA VIAGEM!</button>
+      </div>
     </div>
   );
 };

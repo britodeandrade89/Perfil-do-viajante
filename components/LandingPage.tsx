@@ -7,21 +7,29 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onSelectTraveler, onSelectAgent }) => {
   return (
-    <div className="container" style={{ textAlign: 'center', marginTop: '50px' }}>
-      <div className="header">
-        <h1 className="logo-text">Check-in, GO! ✈️</h1>
-        <p className="subtitle">Seu portal de viagens personalizadas</p>
+    <div className="landing-container">
+      <div className="hero-section">
+        <div className="hero-overlay"></div>
+        <div className="hero-content">
+          <div className="logo logo-light" style={{ fontSize: '2.8rem' }}>
+            Check-in, GO! <span className="logo-emoji">✈️</span>
+          </div>
+          <p>Comece Sua Próxima Aventura! Assessoria de Viagens Personalizada, Online e Presencial.</p>
+        </div>
       </div>
-      
-      <div className="section-title" style={{ justifyContent: 'center' }}>Escolha seu perfil</div>
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '30px' }}>
-        <button onClick={onSelectTraveler} type="button">
-          ✈️ Sou Viajante
-        </button>
-        <button onClick={onSelectAgent} type="button" style={{ backgroundColor: '#333', color: '#fff' }}>
-          💼 Sou Agente de Viagem
-        </button>
+      <div className="choices-container">
+        <div className="choice-card">
+          <h2><span>✈️</span>Área do Viajante</h2>
+          <button onClick={onSelectTraveler} type="button" className="btn-secondary">
+            QUERO PLANEJAR MINHA VIAGEM
+          </button>
+        </div>
+        <div className="choice-card">
+          <h2><span>💼</span>Área do Agente de Viagem</h2>
+          <button onClick={onSelectAgent} type="button" className="btn-primary">
+            PORTAL DO AGENTE
+          </button>
+        </div>
       </div>
     </div>
   );
