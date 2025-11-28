@@ -29,12 +29,58 @@
         .option-item label { margin: 0; font-weight: normal; font-size: 15px; cursor: pointer; }
 
         /* Box de Avisos */
-        .disclaimer-box { background-color: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 6px; color: #856404; font-size: 14px; margin-top: 25px; line-height: 1.5; }
+        .disclaimer-box { background-color: #e9f7ff; border: 1px solid #bde0fe; padding: 15px; border-radius: 6px; color: #00568c; font-size: 14px; margin-top: 25px; line-height: 1.5; }
         .disclaimer-box strong { display: block; margin-bottom: 5px; }
 
         /* Botão */
         button { width: 100%; padding: 18px; background-color: #008000; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         button:hover { background-color: #006400; transform: translateY(-2px); }
+
+        /* Estilos para Planos de Preços */
+        .plans-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .plan-card {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-top: 4px solid #008000;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .plan-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #008000;
+            margin: 0 0 10px 0;
+        }
+        .plan-price {
+            font-size: 2.2em;
+            font-weight: 900;
+            color: #333;
+            margin: 10px 0;
+        }
+        .plan-price .original-price {
+            font-size: 0.5em;
+            font-weight: normal;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+        .plan-description {
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.5;
+            min-height: 140px; /* Alinha a altura dos cards */
+        }
     </style>
   <script type="importmap">
 {

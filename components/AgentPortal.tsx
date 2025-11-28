@@ -100,14 +100,19 @@ const AgentPortal: React.FC<AgentPortalProps> = ({ onBack }) => {
                   <strong>Destino:</strong> {renderValue(submission.data.destino)}
                 </p>
               </div>
+               <p><strong>Plano Escolhido:</strong> {renderValue(submission.data.plano_assessoria)}</p>
               <p><strong>Enviado em:</strong> {new Date(submission.id).toLocaleString('pt-BR')}</p>
               <p><strong>Contato:</strong> {renderValue(submission.data.contato)}</p>
               <p><strong>Viajantes:</strong> {renderValue(submission.data.quem_vai)}</p>
               <p><strong>Datas:</strong> {renderValue(submission.data.data_ida)} a {renderValue(submission.data.data_volta)}</p>
+              <p><strong>Flexibilidade Datas:</strong> {renderValue(submission.data.flexibilidade_datas)}</p>
+              <p><strong>Experiência de Viagem:</strong> {renderValue(submission.data.experiencia_viagem)}</p>
               <p><strong>Aeroporto de Saída:</strong> {renderValue(submission.data.aeroporto_saida)}</p>
               <p><strong>Bagagem:</strong> {renderValue(submission.data.bagagem)}</p>
               <p><strong>Cia Aérea:</strong> {renderValue(submission.data.cia_aerea)}</p>
-              <p><strong>Transporte:</strong> {renderValue(submission.data.transporte)}</p>
+              <p><strong>Preferência de Voo:</strong> {renderValue(submission.data.preferencia_voo)}</p>
+              <p><strong>Busca de Transporte:</strong> {renderValue(submission.data.meios_transporte_busca)}</p>
+              <p><strong>Transporte no Destino:</strong> {renderValue(submission.data.transporte_destino)}</p>
               <p><strong>Pagamento:</strong> {renderValue(submission.data.pagamento)}</p>
               <p><strong>Plataforma:</strong> {renderValue(submission.data.plataforma)}</p>
               <p><strong>Observações:</strong> {renderValue(submission.data.obs)}</p>
